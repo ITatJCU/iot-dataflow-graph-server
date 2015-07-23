@@ -1,0 +1,42 @@
+{
+	"name":        "iot-dataflow-graph-server",
+	"description": "IoT Dataflow Graph Server",
+	"homepage":    "https://github.com/adamrehn/iot-dataflow-graph-server",
+	"main":        "server.js",
+	"version":     "1.0.0",
+	
+	"files": [
+		"server.js",
+		"DirectedGraph.js",
+		"GraphManager.js",
+		"NetworkManager.js",
+		"TransformNodes.js",
+		"nodes/sources.json",
+		"nodes/sinks.json",
+		"nodes/transforms.js",
+		"nodes/transforms/comparison-inputs.js",
+		"nodes/transforms/comparison-values.js",
+		"nodes/transforms/operators-inputs.js",
+		"nodes/transforms/string-operations.js"
+	],
+	
+	"engines": {
+		"iojs": ">=2.0.0"
+	},
+	
+	"author": {
+		"name":  "Adam Rehn",
+		"email": "adam@adamrehn.com"
+	},
+	
+	"repository": {
+		"type": "git",
+		"url":  "https://github.com/adamrehn/iot-dataflow-graph-server.git"
+	},
+	
+	"dependencies": {
+		"express":     "*",
+		"body-parser": "*",
+		"open":        "*"
+	}
+}

@@ -1,0 +1,166 @@
+html, body {
+	height: 100%;
+}
+
+body
+{
+	background: #55c3fa url('../images/grid.svg');
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.9em;
+	margin: 0;
+}
+
+#toolbox
+{
+	border-right:     1px solid #000;
+	background-color: #eee;
+	position:         fixed;
+	top:              0;
+	left:             0;
+	height:           100%;
+	z-index:          999;
+	overflow:         auto;
+	
+	-webkit-box-shadow: 0px 0px 9px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow:    0px 0px 9px 1px rgba(0,0,0,0.75);
+	box-shadow:         0px 0px 9px 1px rgba(0,0,0,0.75);
+}
+
+#toolbox #processGraph
+{
+	font-family:      'Open Sans', sans-serif;
+	text-transform:   uppercase;
+	font-weight:      bold;
+	font-size:        0.9em;
+	display:          block;
+	width:            100%;
+	border:           none;
+	border-bottom:    1px solid #ccc;
+	text-align:       center;
+	padding:          1em 0;
+	cursor:           pointer;
+	background-color: #ffbf23;
+}
+
+#toolbox #processGraph:hover
+{
+	background-color: #327ebe;
+	color: #fff;
+}
+
+#toolbox div {
+	border-left: 1em solid #000;
+}
+
+#toolbox h1
+{
+	margin:         0;
+	text-transform: uppercase;
+	font-size:      0.9em;
+	font-weight:    bold;
+	padding:        1.25em;
+	color:          #555;
+}
+
+#toolbox ul, #toolbox ul li
+{
+	list-style-type: none;
+	margin: 0;
+}
+
+#toolbox ul
+{
+	padding: 0;
+	border-bottom: 1px solid #ccc;
+}
+
+#toolbox ul li
+{
+	cursor: pointer;
+	padding: 1em 3em;
+}
+
+#toolbox ul li:hover {
+	background-color: #fff;
+}
+
+#container
+{
+	position:   relative;
+	overflow:   auto;
+	min-height: 100%;
+}
+
+.node
+{
+	box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.75);
+	background-color: rgba(250,250,250,1);
+	border: 0.5em solid #000;
+	text-align: center;
+	color: #000;
+	cursor: default;
+	font-size: 1em;
+	position: absolute;
+	width: auto;
+	height: auto;
+	padding: 1.25em;
+	border-radius: 1em;
+}
+
+.node p {
+	margin: 0;
+}
+
+.node table {
+	margin-top: 1em;
+}
+
+.node table tr td
+{
+	text-align: right;
+	padding: 0.5em;
+}
+
+.source, #toolbox #sourceNodes {
+	border-color: rgb(255,0,0);
+}
+
+.sink, #toolbox #sinkNodes {
+	border-color: rgb(0,99,220);
+}
+
+.transform, #toolbox #transformNodes {
+	border-color: rgb(133,195,41);
+}
+
+#deleteContainer
+{
+	display:  none;
+	position: fixed;
+	width:    100%;
+	bottom:   0;
+	left:     0;
+	z-index:  -1;
+}
+
+#deleteDropZone
+{
+	border-radius:    1em;
+	cursor:           default;
+	margin-left:      auto;
+	margin-right:     auto;
+	margin-bottom:    0.5em;
+	text-align:       center;
+	width:            60%;
+	min-height:       7em;
+	line-height:      7em;
+	background-color: rgba(255,255,255,0.75);
+}
+
+#deleteDropZone.highlighted {
+	background-color: rgba(255,255,255,1);
+}
+
+._jsPlumb_endpoint {
+	z-index: 99;
+}

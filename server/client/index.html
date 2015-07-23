@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+		
+		<title>IoT Dataflow Graph Editor</title>
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+		<link href="./css/style.css" rel="stylesheet" type="text/css">
+		
+		<script type="text/javascript" src="./js/thirdparty/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="./js/thirdparty/dom.jsPlumb-1.7.6-min.js"></script>
+		<script type="text/javascript" src="./js/GraphManager.js"></script>
+		<script type="text/javascript" src="./js/ServerCommunicationManager.js"></script>
+		<script type="text/javascript" src="./js/UIEvents.js"></script>
+		<script type="text/javascript" src="/availableNodes"></script>
+		<script type="text/javascript" src="./js/main.js"></script>
+	</head>
+	<body>
+		<div id="toolbox">
+			
+			<button id="processGraph">Apply Changes</button>
+			
+			<div id="sourceNodes">
+				<h1>Source Nodes</h1>
+				<ul></ul>
+			</div>
+			
+			<div id="sinkNodes">
+				<h1>Sink Nodes</h1>
+				<ul></ul>
+			</div>
+			
+			<div id="transformNodes">
+				<h1>Transform Nodes</h1>
+				<ul></ul>
+			</div>
+			
+		</div>
+		
+		<div id="container"></div>
+		
+		<div id="deleteContainer">
+			<div id="deleteDropZone">Drop here to delete node</div>
+		</div>
+	</body>
+</html>

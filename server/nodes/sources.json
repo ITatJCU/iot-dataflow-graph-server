@@ -1,0 +1,6 @@
+[
+	{
+		"id":    "timestamp-source",
+		"label": "Current Unix Timestamp"
+	}
+]
