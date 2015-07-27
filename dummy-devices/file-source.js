@@ -24,23 +24,26 @@ var dgram = require('dgram');
 var sock = dgram.createSocket('udp4');
 
 //The source identifier
-SOURCE_ID = 'file-source'
+SOURCE_ID = 'file-source';
 
 //The file to read from
-SOURCE_FILE = '/dev/null'
+SOURCE_FILE = '/dev/null';
+
+//The transform to be applied to the raw data
+DATA_TRANSFORM = function(data) { return data.toString() };
 
 //The interval to read at, in milliseconds
-READ_INTERVAL = 1000
+READ_INTERVAL = 1000;
 
 //Fixed settings, do not modify
-MULTICAST_ADDRESS = '224.0.0.114'
-MULTICAST_PORT    = 7070
+MULTICAST_ADDRESS = '224.0.0.114';
+MULTICAST_PORT    = 7070;
 
 var fs = require('fs');
 setInterval(function()
 {
 	var fileContents = fs.readFileSync(SOURCE_FILE);
-	var message = new Buffer(SOURCE_ID + '\n' + fileContents);
+	var message = new Buffer(SOURCE_ID + '\n' + DATA_TRANSFORM(fileContents));
 	sock.send(message, 0, message.length, MULTICAST_PORT, MULTICAST_ADDRESS, function(err){});
 },
 READ_INTERVAL);
