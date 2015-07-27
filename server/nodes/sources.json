@@ -2,5 +2,9 @@
 	{
 		"id":    "timestamp-source",
 		"label": "Current Unix Timestamp"
+	},
+	{
+		"id":    "file-source",
+		"label": "Data From File"
 	}
 ]
