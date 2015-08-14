@@ -23,6 +23,12 @@
 var dgram = require('dgram');
 var sock = dgram.createSocket('udp4');
 
+//The sink identifier
+SINK_ID = 'file-sink';
+
+//The file to write to
+SINK_FILE = '/dev/null';
+
 MULTICAST_ADDRESS = '224.0.0.115'
 MULTICAST_PORT    = 9090
 
@@ -30,12 +36,13 @@ sock.bind(MULTICAST_PORT, function() {
 	sock.addMembership(MULTICAST_ADDRESS);
 });
 
+var fs = require('fs');
 sock.on('message', function(msg, rinfo)
 {
 	var message = msg.toString();
 	var lines = message.split('\n', 2);
-	if (lines.length == 2 && lines[0] == 'console-sink')
+	if (lines.length == 2 && lines[0] == SINK_ID)
 	{
-		console.log(lines[1]);
+		fs.writeFileSync(SINK_FILE, lines[1], {flag: 'w'});
 	}
 });
