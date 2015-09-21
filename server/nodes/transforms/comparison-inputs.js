@@ -49,7 +49,7 @@ module.exports = [
 	{
 		'id':        'condition-less-than-input',
 		'label':     'Condition: Input 1 < Input 2',
-		'inputs':    1,
+		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
@@ -61,11 +61,12 @@ module.exports = [
 	{
 		'id':        'condition-greater-than-input',
 		'label':     'Condition: Input 1 > Input 2',
-		'inputs':    1,
+		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
 			//Determine if the first upstream value is greater than the second upstream value
+			console.log(node.inputValues);
 			return parseFloat(node.inputValues[0]) > parseFloat(node.inputValues[1]);
 		}
 	}

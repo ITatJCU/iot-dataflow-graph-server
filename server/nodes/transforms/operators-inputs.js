@@ -20,7 +20,61 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 */
+function convertToBool(val)
+{
+	var numericValue = parseFloat(val);
+	return (val === true || val == "true" || (!isNaN(numericValue) && numericValue != 0));
+}
+
 module.exports = [
+	
+	{
+		'id':        'and-operator',
+		'label':     'Condition: Input 1 AND Input 2',
+		'inputs':    2,
+		'validate':  function(node) {},
+		'transform': function(node)
+		{
+			//Apply the boolean AND operator to the upstream values
+			return convertToBool(node.inputValues[0]) && convertToBool(node.inputValues[1]);
+		}
+	},
+	
+	{
+		'id':        'or-operator',
+		'label':     'Condition: Input 1 OR Input 2',
+		'inputs':    2,
+		'validate':  function(node) {},
+		'transform': function(node)
+		{
+			//Apply the boolean OR operator to the upstream values
+			return convertToBool(node.inputValues[0]) || convertToBool(node.inputValues[1]);
+		}
+	},
+	
+	{
+		'id':        'xor-operator',
+		'label':     'Condition: Input 1 XOR Input 2',
+		'inputs':    2,
+		'validate':  function(node) {},
+		'transform': function(node)
+		{
+			//Apply the bitwise XOR operator to the upstream values
+			return convertToBool(node.inputValues[0]) ^ convertToBool(node.inputValues[1]);
+		}
+	},
+	
+	{
+		'id':        'not-operator',
+		'label':     'NOT Input',
+		'inputs':    1,
+		'validate':  function(node) {},
+		'transform': function(node)
+		{
+			//Apply the boolean NOT operator to the upstream value
+			return !convertToBool(node.inputValues[0]);
+		}
+	},
 	
 	{
 		'id':        'addition-operator',
