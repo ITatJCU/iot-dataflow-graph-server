@@ -23,7 +23,6 @@
 module.exports = [].concat(
 	
 	require('./transforms/string-operations.js'),
-	require('./transforms/comparison-values.js'),
 	require('./transforms/comparison-inputs.js'),
 	require('./transforms/operators-inputs.js')
 	

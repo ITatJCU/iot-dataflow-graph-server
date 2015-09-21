@@ -1,5 +1,10 @@
 [
 	{
+		"id":    "value-source",
+		"label": "Create Value",
+		"fields": { "Value":"" }
+	},
+	{
 		"id":    "timestamp-source",
 		"label": "Current Unix Timestamp"
 	},

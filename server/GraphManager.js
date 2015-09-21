@@ -30,6 +30,9 @@ function GraphManager(network)
 	//The network manager
 	this.network = new NetworkManager();
 	
+	//The list of intervals for "value-source" nodes
+	this.intervals = [];
+	
 	//The flow graph itself
 	this.graph = new DirectedGraph();
 	
@@ -60,6 +63,8 @@ GraphManager.prototype.processGraphSubmission = function(graphDetails)
 {
 	//Remove any existing source data listeners
 	this.network.resetSourceListeners();
+	this.intervals.map(clearInterval);
+	this.intervals = [];
 	
 	//Reset our graph
 	this.graph = new DirectedGraph();
@@ -154,14 +159,30 @@ GraphManager.prototype.validateGraph = function()
 //Creates the function for evaluating a source node
 GraphManager.prototype.createSourceNodeFunction = function(node, outgoingNodes)
 {
-	//Register the evaluation function as a source data listener
-	this.network.onSource(node.id, function(data)
+	//Determine if we are dealing with the special "value-source" source node
+	if (node.id == "value-source")
 	{
-		//Pass the source data to all downstream nodes
-		outgoingNodes.forEach(function(targetNode) {
-			targetNode.evaluate(targetNode, node, data);
+		//Register an interval to generate the specified value
+		this.intervals.push( setInterval(function()
+		{
+			//Pass the source data to all downstream nodes
+			outgoingNodes.forEach(function(targetNode) {
+				targetNode.evaluate(targetNode, node, node.fields['Value']);
+			});
+			
+		}, 500) );
+	}
+	else
+	{
+		//Register the evaluation function as a source data listener
+		this.network.onSource(node.id, function(data)
+		{
+			//Pass the source data to all downstream nodes
+			outgoingNodes.forEach(function(targetNode) {
+				targetNode.evaluate(targetNode, node, data);
+			});
 		});
-	});
+	}
 	
 	//Since source nodes never get called by upstream nodes (just the event trigger),
 	//we don't actually need to store the function on the node itself
