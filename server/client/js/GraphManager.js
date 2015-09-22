@@ -183,6 +183,23 @@ GraphManager.prototype.CreateNode = function(data)
 	}
 }
 
+//Sorts connections based on target endpoint location
+GraphManager.connectionSort = function(a, b)
+{
+	var aLoc = a.endpoints[1].canvas.offsetTop;
+	var bLoc = b.endpoints[1].canvas.offsetTop;
+	
+	if (aLoc < bLoc) {
+		return -1;
+	}
+	else if (aLoc > bLoc) {
+		return 0;
+	}
+	else {
+		return 0;
+	}
+};
+
 //Builds the flow graph from the jsPlumb graph
 GraphManager.prototype.RebuildGraph = function()
 {
@@ -194,6 +211,7 @@ GraphManager.prototype.RebuildGraph = function()
 	
 	//Iterate over each of the connections in the jsPlumb graph
 	var connections = jsPlumb.getAllConnections();
+	connections.sort(GraphManager.connectionSort);
 	connections.forEach(function(connection)
 	{
 		//If the source element is not already in the list of seen vertices, add it

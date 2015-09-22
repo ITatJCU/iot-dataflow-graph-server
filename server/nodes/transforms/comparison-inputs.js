@@ -66,7 +66,6 @@ module.exports = [
 		'transform': function(node)
 		{
 			//Determine if the first upstream value is greater than the second upstream value
-			console.log(node.inputValues);
 			return parseFloat(node.inputValues[0]) > parseFloat(node.inputValues[1]);
 		}
 	}
