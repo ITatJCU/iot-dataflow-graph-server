@@ -23,50 +23,50 @@
 module.exports = [
 	
 	{
-		'id':        'condition-equals-input',
-		'label':     'Condition: Input 1 == Input 2',
+		'id':        'addition-operator',
+		'label':     'Input 1 + Input 2',
 		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
-			//Determine if the upstream values are equal
-			return node.inputValues[0] == node.inputValues[1];
+			//Apply the addition operator to the upstream values
+			return parseFloat(node.inputValues[0]) + parseFloat(node.inputValues[1]);
 		}
 	},
 	
 	{
-		'id':        'condition-not-equals-input',
-		'label':     'Condition: Input 1 != Input 2',
+		'id':        'subtraction-operator',
+		'label':     'Input 1 - Input 2',
 		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
-			//Determine if the upstream values are not equal
-			return node.inputValues[0] != node.inputValues[1];
+			//Apply the subtraction operator to the upstream values
+			return parseFloat(node.inputValues[0]) - parseFloat(node.inputValues[1]);
 		}
 	},
 	
 	{
-		'id':        'condition-less-than-input',
-		'label':     'Condition: Input 1 < Input 2',
+		'id':        'multiplication-operator',
+		'label':     'Input 1 * Input 2',
 		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
-			//Determine if the first upstream value is less than the second upstream value
-			return parseFloat(node.inputValues[0]) < parseFloat(node.inputValues[1]);
+			//Apply the multiplication operator to the upstream values
+			return parseFloat(node.inputValues[0]) * parseFloat(node.inputValues[1]);
 		}
 	},
 	
 	{
-		'id':        'condition-greater-than-input',
-		'label':     'Condition: Input 1 > Input 2',
+		'id':        'division-operator',
+		'label':     'Input 1 / Input 2',
 		'inputs':    2,
 		'validate':  function(node) {},
 		'transform': function(node)
 		{
-			//Determine if the first upstream value is greater than the second upstream value
-			return parseFloat(node.inputValues[0]) > parseFloat(node.inputValues[1]);
+			//Apply the division operator to the upstream values
+			return parseFloat(node.inputValues[0]) / parseFloat(node.inputValues[1]);
 		}
 	}
 	

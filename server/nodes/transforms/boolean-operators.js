@@ -74,54 +74,6 @@ module.exports = [
 			//Apply the boolean NOT operator to the upstream value
 			return !convertToBool(node.inputValues[0]);
 		}
-	},
-	
-	{
-		'id':        'addition-operator',
-		'label':     'Input 1 + Input 2',
-		'inputs':    2,
-		'validate':  function(node) {},
-		'transform': function(node)
-		{
-			//Apply the addition operator to the upstream values
-			return parseFloat(node.inputValues[0]) + parseFloat(node.inputValues[1]);
-		}
-	},
-	
-	{
-		'id':        'subtraction-operator',
-		'label':     'Input 1 - Input 2',
-		'inputs':    2,
-		'validate':  function(node) {},
-		'transform': function(node)
-		{
-			//Apply the subtraction operator to the upstream values
-			return parseFloat(node.inputValues[0]) - parseFloat(node.inputValues[1]);
-		}
-	},
-	
-	{
-		'id':        'multiplication-operator',
-		'label':     'Input 1 * Input 2',
-		'inputs':    2,
-		'validate':  function(node) {},
-		'transform': function(node)
-		{
-			//Apply the multiplication operator to the upstream values
-			return parseFloat(node.inputValues[0]) * parseFloat(node.inputValues[1]);
-		}
-	},
-	
-	{
-		'id':        'division-operator',
-		'label':     'Input 1 / Input 2',
-		'inputs':    2,
-		'validate':  function(node) {},
-		'transform': function(node)
-		{
-			//Apply the division operator to the upstream values
-			return parseFloat(node.inputValues[0]) / parseFloat(node.inputValues[1]);
-		}
 	}
 	
 ];
