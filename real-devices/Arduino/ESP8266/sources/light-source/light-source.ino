@@ -26,22 +26,13 @@
 #include <ESP8266MulticastUDP.h>
 
 //The identifier for this node
-#define NODE_IDENTIFIER String("ambient-source")
-
-//The details of the WiFi access point
-#define WIFI_AP_SSID String("iot-dataflow")
-#define WIFI_AP_PASSCODE String("it-at-jcu")
-
-//The multicast group details for a source
-#define MULTICAST_ADDRESS IPAddress(224, 0, 0, 114)
-#define MULTICAST_PORT 7070
+const String& NODE_IDENTIFIER = "light-source";
 
 //The interval (in milliseconds) at which input is read
-#define READ_INTERVAL 100
+#define READ_INTERVAL 400
 
-// Setup the ESP8266 Multicast UDP object
-ESP8266MulticastUDP multicast(WIFI_AP_SSID, WIFI_AP_PASSCODE,
-  MULTICAST_ADDRESS, MULTICAST_PORT);
+// Setup the ESP8266 Multicast UDP object as a source
+ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 114), 7070);
 
 
 void setup()
@@ -50,18 +41,19 @@ void setup()
   Serial.begin(115200);
 
   multicast.begin();
+  Serial.print(NODE_IDENTIFIER);
   if (multicast.isConnected()) {
-    Serial.println("Connected to Wifi network");
+    Serial.println(" connected to Wifi network");
   } else {
-    Serial.println("Error: failed to connect to WiFi network!");
+    Serial.println(" error: failed to connect to WiFi network!");
   }
 }
 
 
 //Reads the current sensor input
-// Note: ESP-12 dev board light sensor returns a value 0 (high) - 1023 (low)
+// Note: a light sensor returns a value 0 (bright light) - 1023 (darkness)
 int readSource() {
-  int value = (int) ((1024 - analogRead(A0)) / 1024.0 * 100);
+  int value = (int) round((1023 - analogRead(A0)) / 1023.0 * 100);
   return value;
 }
 
