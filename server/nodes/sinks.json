@@ -2,5 +2,9 @@
 	{
 		"id":    "console-sink",
 		"label": "Server Console Output"
+	},
+	{
+		"id":    "LED-sink",
+		"label": "LED Output"
 	}
 ]
