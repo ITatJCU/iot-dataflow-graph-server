@@ -26,18 +26,22 @@
 #include <ESP8266MulticastUDP.h>
 
 //The identifier for this node
-const String& NODE_IDENTIFIER = "LED-sink";
-
-// On the ESP8266 Full dev board, GPIO12 is a green LED
-unsigned int GREEN_LED = 12;
+const String& NODE_IDENTIFIER = "varLED-sink";
 
 // Setup the ESP8266 Multicast UDP object as a sink
-ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 115), 9090);
+ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", 
+  IPAddress(224, 0, 0, 115), 9090);
+
+const int LED_PINS[] = {15, 12, 13};
+
+void setLight(int value) {
+  for (int i = 0; i < 3; ++i) {
+    analogWrite(LED_PINS[i], value);
+  }
+}
 
 void setup()
 {
-  pinMode(GREEN_LED, OUTPUT);
-
   //Initialise serial communications
   Serial.begin(115200);
 
@@ -50,22 +54,29 @@ void setup()
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
   }
+
+  setLight(0);
 }
 
+
 void performTask(String data) {
-  int value = data.toInt(); // toInt() returns 0 on invalid format
-  if (value > 0) {
-    analogWrite(GREEN_LED, 50);
-  } else if (data.equals("true")) {
-    analogWrite(GREEN_LED, 50);
+  int value = (data.toInt() / 5) * 5; // adjust so the range is in increments of 5
+  
+  if (value == 0) {
+    if (data.equals("true")) {
+      setLight(50);
+    } else { // otherwise value is 0 or false
+      setLight(0);
+    }
   } else {
-    analogWrite(GREEN_LED, 0);
+    setLight(value);
   }
 }
 
 
+
 void loop()
-{
+{  
   if (multicast.isConnected())
   {
     DataPacket packet = multicast.read();

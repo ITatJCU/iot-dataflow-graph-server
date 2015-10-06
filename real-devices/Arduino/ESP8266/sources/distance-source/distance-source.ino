@@ -26,53 +26,56 @@
 #include <ESP8266MulticastUDP.h>
 
 //The identifier for this node
-const String& NODE_IDENTIFIER = "LED-sink";
+const String& NODE_IDENTIFIER = "distance-source";
 
-// On the ESP8266 Full dev board, GPIO12 is a green LED
-unsigned int GREEN_LED = 12;
+//The interval (in milliseconds) at which input is read
+#define READ_INTERVAL 500
 
-// Setup the ESP8266 Multicast UDP object as a sink
-ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 115), 9090);
+// Setup the ESP8266 Multicast UDP object as a source
+ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
+  IPAddress(224, 0, 0, 114), 7070);
+
+
+#define ECHO_PIN 14
+#define TRIG_PIN 16
 
 void setup()
 {
-  pinMode(GREEN_LED, OUTPUT);
-
   //Initialise serial communications
   Serial.begin(115200);
 
-  //Attempt to connect to the WiFi network
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(TRIG_PIN, OUTPUT);
+  digitalWrite(TRIG_PIN, LOW);
+
   multicast.begin();
   Serial.print(NODE_IDENTIFIER);
   if (multicast.isConnected()) {
-    multicast.join();
-    Serial.println(" connected to WiFi and joined Multicast group");
+    Serial.println(" connected to Wifi network");
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
   }
 }
 
-void performTask(String data) {
-  int value = data.toInt(); // toInt() returns 0 on invalid format
-  if (value > 0) {
-    analogWrite(GREEN_LED, 50);
-  } else if (data.equals("true")) {
-    analogWrite(GREEN_LED, 50);
-  } else {
-    analogWrite(GREEN_LED, 0);
-  }
-}
+int readSource() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  long duration = pulseIn(ECHO_PIN, HIGH);
 
+  long distance = (long)(duration / 2.0 / 29.1);
+  return distance > 20 ? 0 : distance;
+}
 
 void loop()
 {
   if (multicast.isConnected())
   {
-    DataPacket packet = multicast.read();
-    String message = packet.data;
-
-    if (message.startsWith(NODE_IDENTIFIER)) {
-      performTask(message.substring(NODE_IDENTIFIER.length() + 1));
-    }
+    int distance = readSource();
+    String message = String(NODE_IDENTIFIER) + "\n" + distance;
+    multicast.write(message);
+    delay(READ_INTERVAL);
   }
 }

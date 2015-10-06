@@ -26,18 +26,28 @@
 #include <ESP8266MulticastUDP.h>
 
 //The identifier for this node
-const String& NODE_IDENTIFIER = "LED-sink";
+const String& NODE_IDENTIFIER = "buzzer-sink";
 
-// On the ESP8266 Full dev board, GPIO12 is a green LED
-unsigned int GREEN_LED = 12;
+// We use GPIO 12 for the buzzer
+unsigned int BUZZER_PIN = 12;
+
+typedef enum {
+  WAITING, START, PLAYING
+} PlayState;
+
+PlayState state = WAITING;
+unsigned long play_start_time, current_time;
+unsigned int amount;
 
 // Setup the ESP8266 Multicast UDP object as a sink
-ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 115), 9090);
+ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
+  IPAddress(224, 0, 0, 115), 9090);
+
 
 void setup()
 {
-  pinMode(GREEN_LED, OUTPUT);
-
+  analogWrite(BUZZER_PIN, 0);
+  
   //Initialise serial communications
   Serial.begin(115200);
 
@@ -53,19 +63,51 @@ void setup()
 }
 
 void performTask(String data) {
-  int value = data.toInt(); // toInt() returns 0 on invalid format
-  if (value > 0) {
-    analogWrite(GREEN_LED, 50);
-  } else if (data.equals("true")) {
-    analogWrite(GREEN_LED, 50);
-  } else {
-    analogWrite(GREEN_LED, 0);
+  switch (state) {
+    case WAITING:
+//      Serial.println("waiting");
+      amount = data.toInt();
+      if (amount == 0) {
+        if (data.equals("true")) {
+          state = START;
+          amount = 127;
+        }
+      } else {
+        state = START;
+      }  
+    break;
+    
+    case START:
+//      Serial.print("start, amount: ");
+//      Serial.print(amount);
+      analogWrite(BUZZER_PIN, amount);
+      play_start_time = millis();
+      state = PLAYING;
+//      Serial.print(" play start time: ");
+//      Serial.println(play_start_time);
+    break;
+    
+    case PLAYING:
+//      Serial.print("play start time: ");
+//      Serial.print(play_start_time);
+//      Serial.print(" amount: ");
+//      Serial.print(amount);
+      current_time = millis();
+      if (play_start_time + amount < current_time) {
+        analogWrite(BUZZER_PIN, 0);
+        state = WAITING;
+//        Serial.print(" stopping: ");
+//      } else {
+//        Serial.print(" playing: ");
+      }
+//      Serial.println(current_time);
   }
 }
 
 
 void loop()
 {
+
   if (multicast.isConnected())
   {
     DataPacket packet = multicast.read();

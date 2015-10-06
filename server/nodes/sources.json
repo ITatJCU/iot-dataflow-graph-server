@@ -9,11 +9,11 @@
 		"label": "Current Unix Timestamp"
 	},
 	{
-		"id":    "file-source",
-		"label": "Data From File"
-	},
-	{
 		"id":    "light-source",
 		"label": "Ambient Light Source"
+	},
+	{
+		"id":    "distance-source",
+		"label": "Distance Source"
 	}
 ]

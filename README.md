@@ -33,6 +33,14 @@ Each node type consists of an identifier and a human-readable label. The identif
 
 For an example of the network-related logic that source and sink devices need to conform to, check out the example source and sink scripts in the `dummy-devices` directory.
 
+Using real devices
+----------------------------------------
+
+We provide a collection of ESP8266 Arduino Sketches that run well on the ESP-12 full development board
+See: https://www.google.com.au/search?q=esp-12+full+dev+board&oq=esp-12+full+dev+board
+
+We use a mobile phone as a WIFI hotspot that the devices connect to each other.
+
 
 License
 -------

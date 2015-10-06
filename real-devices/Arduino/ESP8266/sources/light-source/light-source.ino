@@ -29,10 +29,11 @@
 const String& NODE_IDENTIFIER = "light-source";
 
 //The interval (in milliseconds) at which input is read
-#define READ_INTERVAL 400
+#define READ_INTERVAL 25
 
 // Setup the ESP8266 Multicast UDP object as a source
-ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 114), 7070);
+ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
+  IPAddress(224, 0, 0, 114), 7070);
 
 
 void setup()
@@ -52,6 +53,7 @@ void setup()
 
 //Reads the current sensor input
 // Note: a light sensor returns a value 0 (bright light) - 1023 (darkness)
+// so we adjust the range to be 0 - 100
 int readSource() {
   int value = (int) round((1023 - analogRead(A0)) / 1023.0 * 100);
   return value;
