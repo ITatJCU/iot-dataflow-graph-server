@@ -15,5 +15,9 @@
 	{
 		"id":    "distance-source",
 		"label": "Distance Source"
+	},
+	{
+		"id":    "temperature-source",
+		"label": "Temperature Source"
 	}
 ]
