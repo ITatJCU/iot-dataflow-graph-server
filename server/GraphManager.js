@@ -46,6 +46,29 @@ function GraphManager(network)
 	//Annotate the source and sink nodes with their types
 	this.sourceNodes.forEach(function(node) { node.type = 'source'; });
 	this.sinkNodes.forEach(function(node)   { node.type = 'sink';   });
+	
+	//We cache the most recent values associated with source and sink nodes
+	this.cachedValues = {};
+	
+	//Register our network message intercepts to perform value caching
+	var that = this;
+	var interceptCallback = function(node, data)
+	{
+		that.cachedValues[node] = {
+			'value': data,
+			'timestamp': Date.now()
+		};
+	};
+	this.network.interceptIncoming(interceptCallback);
+	this.network.interceptOutgoing(interceptCallback);
+	
+	//Set the initial cached values to null
+	this.listAvailableNodes().map(function(node)
+	{
+		if (node.id != 'value-source' && (node.type == 'source' || node.type == 'sink')) {
+			that.cachedValues[ node.id ] = null;
+		}
+	});
 }
 
 //Lists the available nodes
@@ -58,12 +81,17 @@ GraphManager.prototype.listAvailableNodes = function()
 	);
 }
 
+//Returns the cached values associated with source and sink nodes
+GraphManager.prototype.listCachedValues = function() {
+	return this.cachedValues;
+};
+
 //Processes a submitted graph description
 GraphManager.prototype.processGraphSubmission = function(graphDetails)
 {
 	//Remove any existing source data listeners
 	this.network.resetSourceListeners();
-	this.intervals.map(clearInterval);
+	this.intervals.forEach(clearInterval);
 	this.intervals = [];
 	
 	//Reset our graph

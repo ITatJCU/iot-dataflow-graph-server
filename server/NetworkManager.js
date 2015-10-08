@@ -36,6 +36,10 @@ function NetworkManager()
 	//Create our UDP socket
 	this.sock = dgram.createSocket('udp4');
 	
+	//Our listeners that intercept all incoming and outgoing messages
+	this.incomingInterceptHandlers = [];
+	this.outgoingInterceptHandlers = [];
+	
 	//Listen for messages on the multicast address used by sources
 	var that = this;
 	this.sock.bind(SOURCE_MULTICAST_PORT, function()
@@ -46,6 +50,16 @@ function NetworkManager()
 	
 	//Event emitter for notifying listeners of messages received from sources
 	this.sourceEvents = new EventEmitter();
+}
+
+//Registers a listener for intercepting all incoming messages
+NetworkManager.prototype.interceptIncoming = function(handler) {
+	this.incomingInterceptHandlers.push(handler);
+}
+
+//Registers a listener for intercepting all outgoing messages
+NetworkManager.prototype.interceptOutgoing = function(handler) {
+	this.outgoingInterceptHandlers.push(handler);
 }
 
 //Resets all of the registered source message listeners
@@ -62,6 +76,7 @@ NetworkManager.prototype.onSource = function(sourceName, handler) {
 NetworkManager.prototype.sendToSink = function(sinkName, data)
 {
 	var message = new Buffer(sinkName + '\n' + data);
+	this.outgoingInterceptHandlers.forEach(function(handler) { handler(sinkName, data) });
 	this.sock.send(message, 0, message.length, SINK_MULTICAST_PORT, SINK_MULTICAST_ADDRESS, function(err){});
 }
 
@@ -73,6 +88,7 @@ NetworkManager.prototype.sourceMessageHandler = function(msg)
 	if (lines.length == 2)
 	{
 		//The first line is the source name, the second is the payload
+		this.incomingInterceptHandlers.forEach(function(handler) { handler(lines[0], lines[1]) });
 		this.sourceEvents.emit(lines[0], lines[1]);
 	}
 	else {
