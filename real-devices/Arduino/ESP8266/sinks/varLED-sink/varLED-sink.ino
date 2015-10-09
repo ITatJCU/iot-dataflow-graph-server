@@ -34,6 +34,8 @@ ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
 
 const int LED_PINS[] = {15, 12, 13};
 
+#define ERROR_PIN 15
+
 void setLight(int value) {
   for (int i = 0; i < 3; ++i) {
     analogWrite(LED_PINS[i], value);
@@ -51,11 +53,12 @@ void setup()
   if (multicast.isConnected()) {
     multicast.join();
     Serial.println(" connected to WiFi and joined Multicast group");
+    setLight(0);
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
+    pinMode(ERROR_PIN, OUTPUT);
+    digitalWrite(ERROR_PIN, HIGH);
   }
-
-  setLight(0);
 }
 
 

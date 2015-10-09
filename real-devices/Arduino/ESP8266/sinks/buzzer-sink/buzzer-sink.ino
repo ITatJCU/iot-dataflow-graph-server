@@ -31,6 +31,8 @@ const String& NODE_IDENTIFIER = "buzzer-sink";
 // We use GPIO 12 for the buzzer
 unsigned int BUZZER_PIN = 12;
 
+#define ERROR_PIN 15
+
 typedef enum {
   WAITING, START, PLAYING
 } PlayState;
@@ -59,6 +61,8 @@ void setup()
     Serial.println(" connected to WiFi and joined Multicast group");
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
+    pinMode(ERROR_PIN, OUTPUT);
+    digitalWrite(ERROR_PIN, HIGH);
   }
 }
 

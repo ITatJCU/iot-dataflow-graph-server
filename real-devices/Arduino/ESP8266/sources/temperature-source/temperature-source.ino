@@ -40,6 +40,8 @@ ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
 #define TEMP_PIN 12
 #define DHTTYPE DHT11
 
+#define ERROR_PIN 15
+
 DHT dht(TEMP_PIN, DHTTYPE);
 
 
@@ -56,6 +58,8 @@ void setup()
     Serial.println(" connected to Wifi network");
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
+    pinMode(ERROR_PIN, OUTPUT);
+    digitalWrite(ERROR_PIN, HIGH);
   }
 }
 

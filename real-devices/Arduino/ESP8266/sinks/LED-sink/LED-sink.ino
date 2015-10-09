@@ -31,6 +31,9 @@ const String& NODE_IDENTIFIER = "LED-sink";
 // On the ESP8266 Full dev board, GPIO12 is a green LED
 unsigned int GREEN_LED = 12;
 
+#define ERROR_PIN 15
+
+
 // Setup the ESP8266 Multicast UDP object as a sink
 ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu", IPAddress(224, 0, 0, 115), 9090);
 
@@ -49,6 +52,8 @@ void setup()
     Serial.println(" connected to WiFi and joined Multicast group");
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
+    pinMode(ERROR_PIN, OUTPUT);
+    digitalWrite(ERROR_PIN, HIGH);
   }
 }
 

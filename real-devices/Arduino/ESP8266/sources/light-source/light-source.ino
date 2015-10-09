@@ -29,11 +29,14 @@
 const String& NODE_IDENTIFIER = "light-source";
 
 //The interval (in milliseconds) at which input is read
-#define READ_INTERVAL 25
+#define READ_INTERVAL 100
 
 // Setup the ESP8266 Multicast UDP object as a source
 ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
   IPAddress(224, 0, 0, 114), 7070);
+
+
+#define ERROR_PIN 15
 
 
 void setup()
@@ -47,6 +50,8 @@ void setup()
     Serial.println(" connected to Wifi network");
   } else {
     Serial.println(" error: failed to connect to WiFi network!");
+    pinMode(ERROR_PIN, OUTPUT);
+    digitalWrite(ERROR_PIN, HIGH);
   }
 }
 
