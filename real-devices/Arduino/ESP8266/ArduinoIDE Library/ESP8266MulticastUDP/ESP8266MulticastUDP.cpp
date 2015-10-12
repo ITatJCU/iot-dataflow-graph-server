@@ -29,7 +29,7 @@ void joinWiFi(const String& ssid, const String& passcode)
 	WiFi.begin(ssid.c_str(), passcode.c_str());
 
 	int attempts = 0;
-	const int maxAttempts = 500;
+	const int maxAttempts = 200;
 	while (WiFi.status() != WL_CONNECTED) {
 		++attempts;
 

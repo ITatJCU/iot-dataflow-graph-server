@@ -14,5 +14,9 @@
 	{
 		"id":    "buzzer-sink",
 		"label": "Buzzer Output"
+	},
+	{
+		"id":    "fan-sink",
+		"label": "Fan Output"
 	}
 ]
