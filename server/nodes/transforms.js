@@ -24,7 +24,7 @@ module.exports = [].concat(
 	
 	require('./transforms/mathematical-operators.js'),
 	require('./transforms/comparison-operators.js'),
-	require('./transforms/boolean-operators.js'),
-	require('./transforms/string-operations.js')
+	require('./transforms/boolean-operators.js')/*,
+	require('./transforms/string-operations.js')*/
 	
 );
