@@ -97,6 +97,11 @@ UIEvents.prototype.SetupEvents = function()
 		that.server.sendRequest( that.graph.RebuildGraph() );
 	});
 	
+	//Add the event handler for the status toggle button
+	$('#toggleStatus').click(function() {
+		$('#status').toggle();
+	});
+	
 	//Adjust the working area to reflect the new toolbox width
 	this.resizeMargins();
 	$(document).resize(function() {

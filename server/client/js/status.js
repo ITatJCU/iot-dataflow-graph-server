@@ -52,44 +52,47 @@ $(document).ready(function()
 {
 	setInterval(function()
 	{
-		query('/nodeValues', function(nodeValues)
+		//Only update the status values when the status output is visible
+		if ($('#status').is(':visible'))
 		{
-			$('#nodeValues').empty();
-			var table  = $(document.createElement('table'));
-			var thead  = $(document.createElement('thead'));
-			var tbody  = $(document.createElement('tbody'));
-			var header = $(document.createElement('tr'));
-			header.append(createCell('Node', true));
-			header.append(createCell('Last Value', true));
-			header.append(createCell('Last Timestamp', true));
-
-			var currTime = Date.now();
-			Object.keys(nodeValues).map(function(node)
+			query('/nodeValues', function(nodeValues)
 			{
-				//Extract the most recent node value, and its corresponding timestamp
-				var nodeValue     = (nodeValues[node] !== null) ? nodeValues[node].value : null;
-				var nodeTimestamp = (nodeValues[node] !== null) ? nodeValues[node].timestamp : null;
+				$('#nodeValues').empty();
+				var table  = $(document.createElement('table'));
+				var thead  = $(document.createElement('thead'));
+				var tbody  = $(document.createElement('tbody'));
+				var header = $(document.createElement('tr'));
+				header.append(createCell('Node', true));
+				header.append(createCell('Last Value', true));
+				header.append(createCell('Last Timestamp', true));
 
-				//If a timestamp value is present, determine how much time has elapsed since
-				if (nodeTimestamp !== null)
+				var currTime = Date.now();
+				Object.keys(nodeValues).map(function(node)
 				{
-					var elapsed = Math.floor((currTime - nodeTimestamp) / 1000);
-					nodeTimestamp = elapsed + ' seconds ago';
-				}
+					//Extract the most recent node value, and its corresponding timestamp
+					var nodeValue     = (nodeValues[node] !== null) ? nodeValues[node].value : null;
+					var nodeTimestamp = (nodeValues[node] !== null) ? nodeValues[node].timestamp : null;
 
-				//Create the table row
-				var tr = $(document.createElement('tr'));
-				tr.append(createCell(node));
-				tr.append(createCell(nodeValue));
-				tr.append(createCell(nodeTimestamp));
-				tbody.append(tr);
+					//If a timestamp value is present, determine how much time has elapsed since
+					if (nodeTimestamp !== null)
+					{
+						var elapsed = Math.floor((currTime - nodeTimestamp) / 1000);
+						nodeTimestamp = elapsed + ' seconds ago';
+					}
+
+					//Create the table row
+					var tr = $(document.createElement('tr'));
+					tr.append(createCell(node));
+					tr.append(createCell(nodeValue));
+					tr.append(createCell(nodeTimestamp));
+					tbody.append(tr);
+				});
+
+				thead.append(header);
+				table.append(thead);
+				table.append(tbody);
+				$('#nodeValues').append(table);
 			});
-
-			thead.append(header);
-			table.append(thead);
-			table.append(tbody);
-			$('#nodeValues').append(table);
-		});
-
+		}
 	}, 10);
 });
