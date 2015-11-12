@@ -5,7 +5,7 @@ IoT Dataflow Graph Server
 
 The server provides a way to control dataflow between a series of networked, single-purpose embedded devices. Each device acts as either a source or a sink, providing sensor data or a feedback mechanism, respectively. Dataflow between devices is dictated by a dataflow graph, created visually using the web frontend.
 
-The server requires [nodejs](https://nodejs.org/) to run, and the web-based client requires a modern, standards-compliant web browser.
+The server requires [nodejs](https://nodejs.org/) to run, and the web-based client requires a modern, standards-compliant web browser. (Note: node 4.x is fine)
 
 To install the server's dependencies, navigate to the `server` directory and execute:
 
