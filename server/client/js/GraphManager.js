@@ -61,7 +61,7 @@ GraphManager.prototype.RetrieveNodeData = function(node)
 }
 
 //Creates a node and adds it to the graph
-GraphManager.prototype.CreateNode = function(data)
+GraphManager.prototype.CreateNode = function(data, x, y)
 {
 	var that = this;
 	
@@ -108,6 +108,13 @@ GraphManager.prototype.CreateNode = function(data)
 		
 		table.append(tbody);
 		node.append(table);
+	}
+	
+	//If a position was specified for the created node, apply it
+	if (x !== undefined && y !== undefined)
+	{
+		node.css('top', y + 'px');
+		node.css('left', x + 'px');
 	}
 	
 	//Make the node draggable

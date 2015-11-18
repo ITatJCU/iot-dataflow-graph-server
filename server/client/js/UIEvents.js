@@ -53,13 +53,52 @@ UIEvents.prototype.PopulateNodeMenu = function(availableNodes)
 			var listItem = $(document.createElement('li'));
 			listItem.text(node.label);
 			listItem.html( listItem.html().replace(/ /g, '&nbsp;') );
-			listItem.click(function() {
-				that.graph.CreateNode(node);
+			
+			//Store a callback on the DOM element for creating the specified node
+			listItem.get(0).nodeCreationCallback = function(x, y) {
+				that.graph.CreateNode(node, x, y);
+			};
+			
+			//Set the list item as draggable
+			listItem.attr('draggable', 'true');
+			listItem.get(0).addEventListener('dragstart', function(event) {
+				event.dataTransfer.setData('text/plain',null);
 			});
 			
 			parentList.append(listItem);
 		}
 	});
+	
+	//Set document-wide the drag handlers
+	var dragged;
+	
+	document.addEventListener("dragstart", function(event)
+	{
+		dragged = event.target;
+		event.target.style.opacity = 0.5;
+	}, false);
+	
+	document.addEventListener("dragend", function(event) {
+		event.target.style.opacity = 1.0;
+	}, false);
+	
+	//Set the drop handlers for the container area
+	document.addEventListener("dragover", function(event) {
+		event.preventDefault();
+	}, false);
+	
+	document.addEventListener("drop", function(event)
+	{
+		event.preventDefault();
+		if (event.target.id == "container")
+		{
+			var offset = $('#container').offset();
+			dragged.nodeCreationCallback(
+				event.clientX - offset.left,
+				event.clientY - offset.top
+			);
+		}
+	}, false);
 }
 
 UIEvents.prototype.resizeMargins = function()
