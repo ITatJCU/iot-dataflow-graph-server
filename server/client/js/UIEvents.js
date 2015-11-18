@@ -66,6 +66,22 @@ UIEvents.prototype.resizeMargins = function()
 {
 	$('#container').css('margin-left', $('#toolbox').outerWidth() + 'px');
 	$('#deleteContainer').css('padding-left', ($('#toolbox').outerWidth() / 2) + 'px');
+	
+	//Resize the height of the node list
+	var listHeight = $('#toolbox').innerHeight() - $('#controlButtons').innerHeight();
+	$('#nodeList').css('height', Math.floor(listHeight) + 'px');
+}
+
+UIEvents.prototype.enableApplyButton = function()
+{
+	$('#processGraph').removeAttr('disabled');
+	$('#processGraph').text('Apply Changes');
+}
+
+UIEvents.prototype.disableApplyButton = function()
+{
+	$('#processGraph').attr('disabled', 'disabled');
+	$('#processGraph').text('Applying Changes...');
 }
 
 //Wires up the UI events
@@ -77,23 +93,33 @@ UIEvents.prototype.SetupEvents = function()
 	this.server.dataReceived(function(response)
 	{
 		//Determine if the server reported success
-		if (response.status == 'success') {
-			alert('Changes applied');
-		}
-		else {
+		if (response.status !== 'success')
+		{
 			alert('Server reported error:\n\n' + response.error);
+			that.enableApplyButton();
+		}
+		else
+		{
+			//Since server communication is usually extremely fast,
+			//introduce a delay to enable the user to see the state change
+			setTimeout(function() {
+				that.enableApplyButton();
+			}, 1000);
 		}
 	});
 	
 	//Register the communication error handler
-	this.server.communicationError(function() {
+	this.server.communicationError(function()
+	{
 		alert('Error: failed to communicate with the server!');
+		that.enableApplyButton();
 	});
 	
 	//Add the event handler for the 'Apply' button
 	$('#processGraph').click(function()
 	{
 		//alert(JSON.stringify(that.graph.RebuildGraph(), true, 1));
+		that.disableApplyButton();
 		that.server.sendRequest( that.graph.RebuildGraph() );
 	});
 	
@@ -104,7 +130,7 @@ UIEvents.prototype.SetupEvents = function()
 	
 	//Adjust the working area to reflect the new toolbox width
 	this.resizeMargins();
-	$(document).resize(function() {
+	$(window).resize(function() {
 		that.resizeMargins();
 	});
 }
