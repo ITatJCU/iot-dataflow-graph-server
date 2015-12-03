@@ -21,9 +21,11 @@
   SOFTWARE.
 */
 
+// necessary 3rd party library: https://github.com/adafruit/DHT-sensor-library
+// make sure you have the lastest ESP8266 Arduino stable release to match!
 #include <ESP8266WiFi.h>
 #include <WiFiUDP.h>
-#include <DHT.h>
+#include <DHT.h> 
 #include <ESP8266MulticastUDP.h>
 
 //The identifier for this node
@@ -72,10 +74,11 @@ void loop()
   if (multicast.isConnected())
   {
     int value = readSource();
+    if (value > 100) return;
     String message = String(NODE_IDENTIFIER) + "\n" + value;
     multicast.write(message);
     Serial.print("Temp: ");
     Serial.println(value);
-    delay(READ_INTERVAL);
   }
+  delay(READ_INTERVAL);
 }

@@ -70,7 +70,7 @@ int readSource() {
   long duration = pulseIn(ECHO_PIN, HIGH);
 
   long distance = (long)(duration / 2.0 / 29.1);
-  return distance > 20 ? 0 : distance;
+  return distance > 40 ? 100 : distance;
 }
 
 void loop()
