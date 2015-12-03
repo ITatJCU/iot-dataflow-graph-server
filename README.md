@@ -41,6 +41,7 @@ See: https://www.google.com.au/search?q=esp-12+full+dev+board&oq=esp-12+full+dev
 
 We use a mobile phone as a WIFI hotspot that the devices connect to each other.
 
+Please note that the temperature sketch uses the DHT library from here: https://github.com/adafruit/DHT-sensor-library. You will need to add this source code to a DHT folder inside the Arduino library folder (see: https://www.arduino.cc/en/Guide/Libraries for details).
 
 License
 -------
