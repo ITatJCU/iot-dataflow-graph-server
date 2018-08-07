@@ -19,5 +19,9 @@
 	{
 		"id":    "temperature-source",
 		"label": "Temperature Source"
+	},
+	{
+		"id":	   "motion-source",
+		"label": "Motion Source"
 	}
 ]
