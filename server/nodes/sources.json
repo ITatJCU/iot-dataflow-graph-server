@@ -23,5 +23,9 @@
 	{
 		"id":	   "motion-source",
 		"label": "Motion Source"
+	},
+	{
+		"id":	"rfid-source",
+		"label": "RFID Source"
 	}
 ]
