@@ -28,6 +28,21 @@
  * 
  * The MRFC522 library to be used can be found at: https://github.com/ljos/MFRC522
  * This one has been forked and updated from the MRFC522 library from the Library Manager!
+ * 
+ * IMPORTANT NOTES ABOUT THE SPI INTERFACE ON THE YISON NODEMCU 12E BOARD
+ *  ST7735    ESP8266   NodeMCU 12E     RC522
+ *  Reset     D0        GPIO16      
+ *  CS        D1        GPIO5 +         NSS
+ *  DC RS     D2        GPIO4 +         
+ *  DIN SDI   HMOSI/D7  GPIO13          MOSI
+ *  CLK       HCLK/D5   GPIO14          SCK
+ *  VCC       Vin       Vin (4.5v)      VCC 3V3
+ *  LED       3V3       V3V
+ *  GND       GND       0in             GND
+ *            HMISO/D6  GPIO12          MISO
+ *            D0        GPIO16          RESET
+ *
+ *  
  */
 
 #include <ESP8266WiFi.h>
@@ -37,10 +52,10 @@
 #include <MFRC522.h>
 
 //The identifier for this node
-const String& NODE_IDENTIFIER = "light-source";
+const String& NODE_IDENTIFIER = "rfid-source";
 
 //The interval (in milliseconds) at which input is read
-#define READ_INTERVAL 100
+#define READ_INTERVAL 1000
 
 // Setup the ESP8266 Multicast UDP object as a source
 ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
@@ -48,8 +63,8 @@ ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
 
 
 #define ERROR_PIN 15
-#define NSSPIN 13
-#define RESETPIN 12
+#define NSSPIN D1
+#define RESETPIN D0
 #define MAX_LEN 5
 
 byte FoundTag;
@@ -65,12 +80,14 @@ void setup()
   //Initialise serial communications
   SPI.begin();
   Serial.begin(115200);
+  
   nfc.begin();
   byte version = nfc.getFirmwareVersion();
   if(!version){
     Serial.print("Didn't find RC522 board");
     while(1);
   }
+
 
   multicast.begin();
   Serial.print(NODE_IDENTIFIER);
@@ -104,6 +121,8 @@ int readSource() {
     }
     Serial.println("");
     Serial.println();
+  } else {
+    return 0;
   }
 
   for(int i = 0; i < 4; i++){
@@ -116,9 +135,11 @@ int readSource() {
   }
   if (GoodTag == "True"){
     Serial.println("Success!");
+    delay(100);
     return 1;
   } else {
     Serial.println("Tag not accepted :(");
+    delay(50);
     return 0;
   }
 }
