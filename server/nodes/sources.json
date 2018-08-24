@@ -27,5 +27,9 @@
 	{
 		"id":	"rfid-source",
 		"label": "RFID Source"
+	},
+	{
+		"id":	"soil-source",
+		"label": "Soil Source"
 	}
 ]
