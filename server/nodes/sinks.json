@@ -18,5 +18,9 @@
 	{
 		"id":    "fan-sink",
 		"label": "Fan Output"
+	},
+	{
+		"id":    "warning-sink",
+		"label": "Warning LED"
 	}
 ]
