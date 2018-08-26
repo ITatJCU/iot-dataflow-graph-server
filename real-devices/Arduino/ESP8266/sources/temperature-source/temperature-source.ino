@@ -39,7 +39,7 @@ ESP8266MulticastUDP multicast("iot-dataflow", "it-at-jcu",
   IPAddress(224, 0, 0, 114), 7070);
 
 
-#define TEMP_PIN 12
+#define TEMP_PIN 13
 #define DHTTYPE DHT11
 
 #define ERROR_PIN 15

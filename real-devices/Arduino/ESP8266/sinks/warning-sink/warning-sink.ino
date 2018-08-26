@@ -1,6 +1,7 @@
 /*
    IoT Dataflow Graph Server
    Copyright (c) 2015, Adam Rehn, Jason Holdsworth
+                 2018, Wilson Bow
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
   of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +30,7 @@
 const String& NODE_IDENTIFIER = "warning-sink";
 
 // On the ESP8266 Full dev board, GPIO12 is a green LED
-unsigned int RED_LED = 0;
+unsigned int RED_LED = 13;
 
 #define ERROR_PIN 15
 
